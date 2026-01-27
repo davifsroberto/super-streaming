@@ -28,9 +28,9 @@ export class ContentRepository {
   async create(content: ContentEntity): Promise<ContentEntity> {
     try {
       const movie = content.getMedia();
-      if (!movie) {
-        throw new Error('Movie must be provided');
-      }
+
+      if (!movie) throw new Error('Movie must be provided');
+
       const video = movie.getVideo();
       const thumbnail = movie.getThumbnail();
 
@@ -59,6 +59,7 @@ export class ContentRepository {
           },
         },
       });
+
       return content;
     } catch (error) {
       this.handleAndThrowError(error);
@@ -75,9 +76,9 @@ export class ContentRepository {
           },
         },
       });
-      if (!content) {
-        return;
-      }
+
+      if (!content) return;
+
       return this.mapToEntity(content);
     } catch (error) {}
   }
@@ -87,9 +88,7 @@ export class ContentRepository {
       include: typeof contentInclude;
     }>,
   >(content: T) {
-    if (!content.Movie) {
-      throw new Error('Movie must be defined');
-    }
+    if (!content.Movie) throw new Error('Movie must be defined');
 
     const contentEntity = ContentEntity.createFrom({
       id: content.id,
@@ -128,6 +127,7 @@ export class ContentRepository {
         );
       }
     }
+
     return contentEntity;
   }
 
