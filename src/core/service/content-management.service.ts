@@ -34,7 +34,9 @@ export class ContentManagementService {
         }),
       }),
     });
+
     await this.contentRepository.create(content);
+
     return content;
   }
 }
