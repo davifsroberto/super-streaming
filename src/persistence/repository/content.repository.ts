@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { Prisma } from '@prisma/client';
 
-import { ContentEntity } from '@src/core/entity/content.entity';
+import { ContentEntity, ContentType } from '@src/core/entity/content.entity';
 import { MovieEntity } from '@src/core/entity/movie.entity';
 import { ThumbnailEntity } from '@src/core/entity/thumbnail.entity';
 import { VideoEntity } from '@src/core/entity/video.entity';
@@ -28,11 +28,9 @@ export class ContentRepository {
   async create(content: ContentEntity): Promise<ContentEntity> {
     try {
       const movie = content.getMedia();
-
       if (!movie) throw new Error('Movie must be provided');
 
       const video = movie.getVideo();
-      const thumbnail = movie.getThumbnail();
 
       await this.model.create({
         data: {
@@ -50,11 +48,9 @@ export class ContentRepository {
               Video: {
                 create: video.serialize(),
               },
-              ...(thumbnail && {
-                Thumbnail: {
-                  create: thumbnail.serialize(),
-                },
-              }),
+              Thumbnail: {
+                create: movie.getThumbnail()?.serialize(),
+              },
             },
           },
         },
@@ -92,7 +88,7 @@ export class ContentRepository {
 
     const contentEntity = ContentEntity.createFrom({
       id: content.id,
-      type: content.type as any,
+      type: content.type as ContentType,
       title: content.title,
       description: content.description,
       createdAt: new Date(content.createdAt),
@@ -146,9 +142,7 @@ export class ContentRepository {
   }
 
   private extractErrorMessage(error: unknown): string {
-    if (error instanceof Error && error.message) {
-      return error.message;
-    }
+    if (error instanceof Error && error.message) return error.message;
 
     return 'An unexpected error occurred.';
   }
@@ -161,5 +155,13 @@ export class ContentRepository {
     }
 
     throw new Error(errorMessage);
+  }
+
+  async clear(): Promise<{ count: number }> {
+    try {
+      return await this.model.deleteMany();
+    } catch (error) {
+      this.handleAndThrowError(error);
+    }
   }
 }

@@ -68,6 +68,7 @@ export class VideoEntity extends BaseEntity {
   getDuration(): number {
     return this.duration;
   }
+
   getSizeInKb(): number {
     return this.sizeInKb;
   }
