@@ -21,7 +21,7 @@ import { CreateVideoResponseDto } from '@src/http/rest/dto/response/create-video
 import { RestResponseInterceptor } from '@src/http/rest/interceptor/rest-response.interceptor';
 
 @Controller('content')
-export class ContentController {
+export class VideoUploadController {
   constructor(
     private readonly contentManagementService: ContentManagementService,
   ) {}
@@ -83,7 +83,25 @@ export class ContentController {
       );
     }
 
-    const createdContent = await this.contentManagementService.createContent({
+    const MAX_FILE_SIZE = 1024 * 1024 * 1024; // 1 gigabyte
+
+    if (videoFile.size > MAX_FILE_SIZE) {
+      throw new BadRequestException('File size exceeds the limit.');
+    }
+
+    const MAX_THUMBNAIL_SIZE = 1024 * 1024 * 10; // 10 megabytes
+
+    if (thumbnailFile.size > MAX_THUMBNAIL_SIZE) {
+      throw new BadRequestException('Thumbnail size exceeds the limit.');
+    }
+
+    if (!videoFile || !thumbnailFile) {
+      throw new BadRequestException(
+        'Both video and thumbnail files are required.',
+      );
+    }
+
+    const createdMovie = await this.contentManagementService.createMovie({
       title: contentData.title,
       description: contentData.description,
       url: videoFile.path,
@@ -91,17 +109,16 @@ export class ContentController {
       sizeInKb: videoFile.size,
     });
 
-    const video = createdContent.getMedia()?.getVideo();
-
-    if (!video) throw new BadRequestException('Video must be present');
-
     return {
-      id: createdContent.getId(),
-      title: createdContent.getTitle(),
-      description: createdContent.getDescription(),
-      url: video.getUrl(),
-      createdAt: createdContent.getCreatedAt(),
-      updatedAt: createdContent.getUpdatedAt(),
+      id: createdMovie.id,
+      title: createdMovie.title,
+      description: createdMovie.description,
+      url: createdMovie.movie.video.url,
+      thumbnailUrl: createdMovie.movie.thumbnail?.url,
+      sizeInKb: createdMovie.movie.video.sizeInKb,
+      duration: createdMovie.movie.video.duration,
+      createdAt: createdMovie.createdAt,
+      updatedAt: createdMovie.updatedAt,
     };
   }
 }
