@@ -18,7 +18,7 @@
     "test:watch": "npm run test -- --watch",
     "test:coverage": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json --runInBand",
+    "test:e2e": "jest --config ./test/jest.e2e.ts --runInBand",
     "prepare": "husky"
   },
   "dependencies": {
@@ -77,7 +77,11 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^@src/(.*)$": "<rootDir>/$1",
+      "^@resource/(.*)$": "<rootDir>/../resource/$1"
+    }
   },
   "prisma": {
     "schema": "database/schema.prisma"

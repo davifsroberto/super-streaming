@@ -8,8 +8,10 @@ import { PrismaService } from '@src/persistence/prisma/prisma.service';
 import { ContentRepository } from '@src/persistence/repository/content.repository';
 import { VideoRepository } from '@src/persistence/repository/video.repository';
 
+import { ConfigModule } from './infra/module/config/config.module';
+
 @Module({
-  imports: [],
+  imports: [ConfigModule.forRoot()],
   controllers: [ContentController, MediaPlayerController],
   providers: [
     PrismaService,
