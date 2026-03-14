@@ -28,8 +28,10 @@ export class MediaPlayerController {
   ) {
     try {
       const url = await this.mediaPlayerService.prepareStreaming(videoId);
+
       const videoPath = path.join('.', url);
       const fileSize = fs.statSync(videoPath).size;
+
       const range = req.headers.range;
 
       if (range) {
@@ -53,7 +55,6 @@ export class MediaPlayerController {
           'Content-Length': fileSize,
           'Content-Type': 'video/mp4',
         });
-
         fs.createReadStream(videoPath).pipe(res);
       }
     } catch (error) {
