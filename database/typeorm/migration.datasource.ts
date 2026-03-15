@@ -8,6 +8,7 @@ const prepareDateSourceForMigration = async () => {
    * see https://github.com/typeorm/typeorm/issues/8914#issuecomment-1938005518
    */
   await dataSource.destroy();
+
   return dataSource;
 };
 
