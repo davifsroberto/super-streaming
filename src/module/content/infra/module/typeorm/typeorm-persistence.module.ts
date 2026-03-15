@@ -4,8 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DefaultEntity } from './entity/default.entity';
 import { TypeOrmMigrationService } from './service/typeorm-migration.service';
 
-import { ConfigModule } from '@contentModule/infra/module/config/config.module';
-import { ConfigService } from '@contentModule/infra/module/config/service/config.service';
+import { ConfigModule } from '@sharedModules/config/config.module';
+import { ConfigService } from '@sharedModules/config/service/config.service';
 
 @Module({})
 export class TypeOrmPersistenceModule {
