@@ -13,6 +13,9 @@ export class Movie extends DefaultEntity<Movie> {
   })
   video: Video;
 
+  // @Column({ type: 'float', nullable: true })
+  // externalRating: number | null;
+
   @OneToOne(() => Content, (content) => content.movie)
   @JoinColumn()
   content: Content;
