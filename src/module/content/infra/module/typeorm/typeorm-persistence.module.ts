@@ -20,13 +20,7 @@ export class TypeOrmPersistenceModule {
         TypeOrmModule.forRootAsync({
           imports: [ConfigModule.forRoot()],
           inject: [ConfigService],
-          useFactory: async (...args: any[]) => {
-            const configService = args.find(
-              (arg) => arg instanceof ConfigService,
-            ) as ConfigService;
-
-            if (!configService) throw new Error('ConfigService not found');
-
+          useFactory: async (configService) => {
             return {
               type: 'postgres',
               logging: false,
