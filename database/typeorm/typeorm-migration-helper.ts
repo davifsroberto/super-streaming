@@ -23,14 +23,17 @@ export const migrate = async () => {
     type: 'postgres',
     ...configService.get('database'),
   } as DataSourceOptions;
+
   await createPostgresDatabase({
     ifNotExist: true,
     options,
   });
+
   await migrationModule.get(TypeOrmMigrationService).migrate();
 };
 
 export const getDataSource = async () => {
   const migrationModule = await createDatabaseModule();
+
   return migrationModule.get(TypeOrmMigrationService).getDataSource();
 };
