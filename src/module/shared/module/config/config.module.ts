@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-imports */
 import { DynamicModule } from '@nestjs/common';
 import {
   ConfigModule as NestConfigModule,
@@ -12,6 +11,7 @@ export class ConfigModule {
   static forRoot(options?: NestConfigModuleOptions): DynamicModule {
     return {
       module: ConfigModule,
+
       imports: [
         NestConfigModule.forRoot({
           ...options,
@@ -19,7 +19,9 @@ export class ConfigModule {
           load: options?.load ? [factory, ...options.load] : [factory],
         }),
       ],
+
       providers: [ConfigService],
+
       exports: [ConfigService],
     };
   }
