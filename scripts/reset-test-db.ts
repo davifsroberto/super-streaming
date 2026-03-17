@@ -1,9 +1,9 @@
-import dotenv from 'dotenv';
+import { config } from 'dotenv';
 import { DataSource } from 'typeorm';
 import { createPostgresDatabase } from 'typeorm-extension';
 
-dotenv.config({ path: '.env' });
-dotenv.config({ path: '.env.test', override: true });
+config({ path: '.env' });
+config({ path: '.env.test', override: true });
 
 async function resetTestDatabase() {
   console.log('🗑️  Resetting test database...');
