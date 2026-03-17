@@ -1,6 +1,6 @@
 import { migrate } from 'database/content/typeorm/typeorm-migration-helper';
 import * as path from 'path';
-import tsConfigPaths from 'tsconfig-paths';
+import * as tsConfigPaths from 'tsconfig-paths';
 
 import tsConfig from '../tsconfig.json';
 

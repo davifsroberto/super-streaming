@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import bcrypt from 'bcrypt';
+import { hash } from 'bcrypt';
 
 import { UserModel } from '@identityModule/core/model/user.model';
 import { UserRepository } from '@identityModule/persistence/repository/user.repository';
@@ -25,7 +25,7 @@ export class UserManagementService {
     }
     const newUser = UserModel.create({
       ...user,
-      password: await bcrypt.hash(user.password, PASSWORD_HASH_SALT),
+      password: await hash(user.password, PASSWORD_HASH_SALT),
     });
     await this.userRepository.save(newUser);
     return newUser;
