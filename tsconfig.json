@@ -23,7 +23,9 @@
     "outDir": "./dist",
     "paths": {
       "@contentModule/*": ["./src/module/content/*"],
+      "@identityModule/*": ["./src/module/identity/*"],
       "@sharedModules/*": ["./src/module/shared/module/*"],
+      "@sharedLibs/*": ["./src/module/shared/*"],
       "@src/*": ["./src/*"],
       "@resource/*": ["./resource/*"]
     },
@@ -37,5 +39,5 @@
     "strictNullChecks": true,
     "target": "es2020"
   },
-  "include": ["src/**/*", "test/**/*", "database/**/*"]
+  "include": ["src/**/*", "test/**/*", "database/**/*", "scripts/**/*"]
 }
