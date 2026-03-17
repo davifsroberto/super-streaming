@@ -1,8 +1,6 @@
 npm run lint:fix
 
-npm run db:drop
-
-npm run db:migrate
+# TODO: ver swobre comandos para dropar e recriar o db
 
 npm run test
 
