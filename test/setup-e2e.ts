@@ -12,7 +12,7 @@ tsConfigPaths.register({
 });
 
 export default async function globalSetup() {
-  console.log('🔧 Running E2E test setup...');
+  console.info('🔧 Running E2E test setup...');
 
   try {
     console.info('📦 Running TypeORM migrations...');

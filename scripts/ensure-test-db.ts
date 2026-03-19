@@ -4,23 +4,23 @@ import { promisify } from 'util';
 const execAsync = promisify(exec);
 
 async function ensureTestDatabase() {
-  console.log('🔧 Ensuring test database is ready...\n');
+  console.info('🔧 Ensuring test database is ready...\n');
 
   try {
-    console.log('📦 Running TypeORM migrations...');
+    console.info('📦 Running TypeORM migrations...');
     const { stdout, stderr } = await execAsync(
       'npm run content:db:migrate --silent',
     );
 
-    if (stdout) console.log(stdout);
+    if (stdout) console.info(stdout);
     if (stderr && !stderr.includes('LOG')) console.error(stderr);
 
-    console.log('✅ Database is ready for E2E tests\n');
+    console.info('✅ Database is ready for E2E tests\n');
   } catch (error: any) {
-    console.log(
+    console.info(
       '⚠️  Migrations failed. This might mean the database needs to be reset.',
     );
-    console.log('   Run: npm run test:e2e:reset\n');
+    console.info('   Run: npm run test:e2e:reset\n');
 
     throw error;
   }

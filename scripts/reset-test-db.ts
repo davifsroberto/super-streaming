@@ -6,7 +6,7 @@ config({ path: '.env' });
 config({ path: '.env.test', override: true });
 
 async function resetTestDatabase() {
-  console.log('🗑️  Resetting test database...');
+  console.info('🗑️  Resetting test database...');
 
   const dataSource = new DataSource({
     type: 'postgres',
@@ -19,7 +19,7 @@ async function resetTestDatabase() {
   });
 
   try {
-    console.log('📦 Creating test database if not exists...');
+    console.info('📦 Creating test database if not exists...');
     await createPostgresDatabase({
       ifNotExist: true,
       options: {
@@ -34,7 +34,7 @@ async function resetTestDatabase() {
 
     await dataSource.initialize();
 
-    console.log('🗑️  Dropping all TypeORM tables in public schema...');
+    console.info('🗑️  Dropping all TypeORM tables in public schema...');
     await dataSource.query(`
       DROP SCHEMA IF EXISTS public CASCADE;
       CREATE SCHEMA public;
@@ -42,18 +42,18 @@ async function resetTestDatabase() {
       GRANT ALL ON SCHEMA public TO public;
     `);
 
-    console.log('🗑️  Resetting Prisma schemas...');
+    console.info('🗑️  Resetting Prisma schemas...');
     await dataSource.query(`DROP SCHEMA IF EXISTS identity CASCADE;`);
     await dataSource.query(`DROP SCHEMA IF EXISTS test CASCADE;`);
     await dataSource.query(`CREATE SCHEMA IF NOT EXISTS identity;`);
     await dataSource.query(`CREATE SCHEMA IF NOT EXISTS test;`);
 
-    console.log('✅ Test database reset complete!');
-    console.log('');
-    console.log('Next steps:');
-    console.log('  1. Run Prisma migrations: npm run identity:db:migrate');
-    console.log('  2. Run TypeORM migrations: npm run content:db:migrate');
-    console.log('  3. Run tests: npm run test:e2e');
+    console.info('✅ Test database reset complete!');
+    console.info('');
+    console.info('Next steps:');
+    console.info('  1. Run Prisma migrations: npm run identity:db:migrate');
+    console.info('  2. Run TypeORM migrations: npm run content:db:migrate');
+    console.info('  3. Run tests: npm run test:e2e');
   } catch (error) {
     console.error('❌ Error resetting test database:', error);
 
