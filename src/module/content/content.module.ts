@@ -9,8 +9,8 @@ import { PersistenceModule } from '@contentModule/persistence/persistence.module
 import { ContentRepository } from '@contentModule/persistence/repository/content.repository';
 import { VideoRepository } from '@contentModule/persistence/repository/video.repository';
 import { ConfigModule } from '@sharedModules/config/config.module';
-import { HttpClient } from '@sharedModules/http-client/client/http.client';
 import { HttpClientModule } from '@sharedModules/http-client/http-client.module';
+
 @Module({
   imports: [
     PersistenceModule.forRoot(),
@@ -26,7 +26,6 @@ import { HttpClientModule } from '@sharedModules/http-client/http-client.module'
     ContentRepository,
     VideoRepository,
     ExternalMovieClient,
-    HttpClient,
   ],
 })
 export class ContentModule {}

@@ -18,8 +18,10 @@ import { PersistenceModule } from '@sharedModules/persistence/prisma/persistence
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '60m' },
     }),
+
     PersistenceModule,
   ],
+
   providers: [
     AuthService,
     AuthResolver,
