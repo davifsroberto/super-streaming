@@ -1,15 +1,15 @@
 import { HttpStatus, INestApplication } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 
 import fs from 'fs';
 import nock, { cleanAll } from 'nock';
 import request from 'supertest';
 
-import { AppModule } from '@src/app.module';
-
+import { ContentModule } from '@contentModule/content.module';
 import { ContentRepository } from '@contentModule/persistence/repository/content.repository';
 import { MovieRepository } from '@contentModule/persistence/repository/movie.repository';
 import { VideoRepository } from '@contentModule/persistence/repository/video.repository';
+import { createNestApp } from '@testInfra/test-e2e.setup';
 describe('VideoUploadController (e2e)', () => {
   let module: TestingModule;
   let app: INestApplication;
@@ -18,12 +18,9 @@ describe('VideoUploadController (e2e)', () => {
   let movieRepository: MovieRepository;
 
   beforeAll(async () => {
-    module = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = module.createNestApplication();
-    await app.init();
+    const nestTestSetup = await createNestApp([ContentModule]);
+    app = nestTestSetup.app;
+    module = nestTestSetup.module;
 
     videoRepository = module.get<VideoRepository>(VideoRepository);
     contentRepository = module.get<ContentRepository>(ContentRepository);

@@ -4,24 +4,38 @@ import { promisify } from 'util';
 const execAsync = promisify(exec);
 
 async function ensureTestDatabase() {
-  console.info('🔧 Ensuring test database is ready...\n');
-
+  console.info('🔧 Ensuring test databases are ready...\n');
   try {
-    console.info('📦 Running TypeORM migrations...');
-    const { stdout, stderr } = await execAsync(
+    // Content
+    console.info('📦 Running Content migrations...');
+    let { stdout, stderr } = await execAsync(
       'npm run content:db:migrate --silent',
     );
-
     if (stdout) console.info(stdout);
     if (stderr && !stderr.includes('LOG')) console.error(stderr);
 
-    console.info('✅ Database is ready for E2E tests\n');
+    // Identity
+    console.info('📦 Running Identity migrations...');
+    ({ stdout, stderr } = await execAsync(
+      'npm run identity:db:migrate --silent',
+    ));
+    if (stdout) console.info(stdout);
+    if (stderr && !stderr.includes('LOG')) console.error(stderr);
+
+    // Billing
+    console.info('📦 Running Billing migrations...');
+    ({ stdout, stderr } = await execAsync(
+      'npm run billing:db:migrate --silent',
+    ));
+    if (stdout) console.info(stdout);
+    if (stderr && !stderr.includes('LOG')) console.error(stderr);
+
+    console.info('✅ All databases are ready for E2E tests\n');
   } catch (error: any) {
     console.info(
       '⚠️  Migrations failed. This might mean the database needs to be reset.',
     );
     console.info('   Run: npm run test:e2e:reset\n');
-
     throw error;
   }
 }
